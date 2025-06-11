@@ -46,23 +46,23 @@ export default function HomeScreen() {
     };
 
     const backgroundHeader = {
-        Clear: ['#E4A56A'],
-        Clouds: ['#CBCBCB'],
-        Rain: ['#456B87'],
-        Snow: ['#e6dada'],
-        Haze: ['#3e5151'],
-        Mist: ['#606c88'],
-        Default: ['#5b84b9'],
+        Clear: ['#E4A56A', '#E4A56A'],
+        Clouds: ['#CBCBCB', '#CBCBCB'],
+        Rain: ['#456B87', '#456B87'],
+        Snow: ['#e6dada', '#e6dada'],
+        Haze: ['#3e5151', '#3e5151'],
+        Mist: ['#606c88', '#606c88'],
+        Default: ['#5b84b9', '#5b84b9'],
     }
 
     const background = {
-        Clear: ['#FFD787'],
-        Clouds: ['#9A9A9A'],
-        Rain: ['#57768C'],
-        Snow: ['#274046'],
-        Haze: ['#decba4'],
-        Mist: ['#3f4c6b'],
-        Default: ['#a7c6f6'],
+        Clear: ['#FFD787', '#FFD787'],
+        Clouds: ['#9A9A9A', '#9A9A9A'],
+        Rain: ['#57768C', '#57768C'],
+        Snow: ['#274046', '#274046'],
+        Haze: ['#decba4', '#decba4'],
+        Mist: ['#3f4c6b', '#3f4c6b'],
+        Default: ['#a7c6f6', '#a7c6f6'],
     }
 
     const groupByDay = (list) => {
@@ -92,11 +92,10 @@ export default function HomeScreen() {
         <SafeAreaView style={styles.main}>
             <CustomHeader />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <View style={styles.tempoBack}>
+                <View>
                     <LinearGradient
                         colors={backgroundHeader[currentWeather] || backgroundHeader.Default}
-                        style={styles.searchBar}
-                    >
+                        style={styles.tempoBack}>
                         <View style={styles.searchBar}>
                             <TextInput
                                 placeholder="INSERT CITY NAME"
@@ -110,7 +109,6 @@ export default function HomeScreen() {
                             {error && <Text style={styles.errorText}>Fout: {error}</Text>}
                         </View>
                     </LinearGradient>
-
                     {weather?.list && (
                         <LinearGradient
                             colors={backgroundGradients[currentWeather] || backgroundGradients.Default}
@@ -142,37 +140,33 @@ export default function HomeScreen() {
                     {/* Per dag scrollbaar */}
                     {weather?.list && (
                         <LinearGradient
-                            colors={background[currentWeather] || background.Default}
                             style={styles.weatherContainerDay}
-                        >
-                            <View style={styles.weatherContainerDay}>
-                                <Text style={styles.sectionTitle}>WEATHER</Text>
-                                <Text style={styles.sectionTitleTwo}>IN THE UPCOMING 5 DAYS:</Text>
-                                <View style={styles.weatherSetContainer}>
-                                    {groupByDay(weather.list).map(([day, item], i) => (
-                                        <LinearGradient
-                                            colors={backgroundHeader[currentWeather] || background.Default}
-                                            style={styles.weatherSet}
-                                        >
-                                            <View key={i}>
-                                                <Text style={styles.dayTitle}>{day}</Text>
-                                                <View style={styles.dailyBox}>
-                                                    <ImageBackground
-                                                        source={{ uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png` }}
-                                                        style={styles.weatherIconSmall}
-                                                        imageStyle={{ opacity: 0.3 }}
-                                                    />
-                                                    <Text style={styles.temp}>
-                                                        {Math.round(item.main.temp)}°C
-                                                    </Text>
-                                                    <Text style={styles.rain}>
-                                                        💧{Math.round(item.pop * 100)}%
-                                                    </Text>
-                                                </View>
+                            colors={background[currentWeather] || backgroundGradients.Default}>
+                            <Text style={styles.sectionTitle}>WEATHER</Text>
+                            <Text style={styles.sectionTitleTwo}>IN THE UPCOMING 5 DAYS:</Text>
+                            <View style={styles.weatherSetContainer}>
+                                {groupByDay(weather.list).map(([day, item], i) => (
+                                    <LinearGradient
+                                        style={styles.weatherSet}
+                                        colors={backgroundHeader[currentWeather] || backgroundGradients.Default}>
+                                        <View key={i}>
+                                            <Text style={styles.dayTitle}>{day}</Text>
+                                            <View style={styles.dailyBox}>
+                                                <ImageBackground
+                                                    source={{ uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png` }}
+                                                    style={styles.weatherIconSmall}
+                                                    imageStyle={{ opacity: 0.3 }}
+                                                />
+                                                <Text style={styles.temp}>
+                                                    {Math.round(item.main.temp)}°C
+                                                </Text>
+                                                <Text style={styles.rain}>
+                                                    💧{Math.round(item.pop * 100)}%
+                                                </Text>
                                             </View>
-                                        </LinearGradient>
-                                    ))}
-                                </View>
+                                        </View>
+                                    </LinearGradient>
+                                ))}
                             </View>
                         </LinearGradient>
                     )}
@@ -187,6 +181,7 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         flexDirection: 'column',
+        top: 50,
     },
     searchBar: {
         flex: 1,
@@ -214,9 +209,9 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     weatherContainer: {
-        borderBottomEndRadius: 40,
-        borderBottomStartRadius: 40,
-        height: 330
+        borderBottomEndRadius: 20,
+        borderBottomStartRadius: 20,
+        height: 330,
     },
     cityName: {
         fontWeight: 900,
@@ -267,23 +262,22 @@ const styles = StyleSheet.create({
     },
     weatherContainerDay: {
         marginTop: 10,
-        borderBottomEndRadius: 40,
-        borderBottomStartRadius: 40,
+        borderRadius: 20,
         textAlign: 'center',
-        paddingBottom: 10
+        paddingBottom: 20,
     },
     weatherSetContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
+        overflow: 'scroll'
     },
     weatherSet: {
         marginVertical: 10,
         borderRadius: 5,
-        marginHorizontal: 3,
-        padding: 12,
-        width: 85,
-        borderBottomEndRadius: 40,
-        borderBottomStartRadius: 40,
+        marginHorizontal: 1,
+        padding: 10,
+        width: 80,
+        borderRadius: 20,
     },
     dayTitle: {
         textAlign: 'center'
